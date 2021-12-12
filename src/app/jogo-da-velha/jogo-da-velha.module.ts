@@ -6,8 +6,7 @@ import { CommonModule } from '@angular/common';
 @NgModule({
   declarations: [],
   imports: [
-    CommonModule,
-    JogoDaVelhaModule
+    CommonModule
   ]
 })
 export class JogoDaVelhaModule { }
