@@ -144,14 +144,17 @@ export class JogoDaVelhaService {
   }
 
   cpuJogar(): void {
+    // verifica jogada de vitória
     let jogada: number[] = this.obterJogada(this.O);
 
-    // tenta jogada para evitar derrota
-    if (jogada.length <= 0) jogada = this.obterJogada(this.X);
+    if (jogada.length <= 0) {
+      // tenta jogar para evitar derrota
+      jogada = this.obterJogada(this.X);
+    }
 
     if (jogada.length <= 0) {
+      // joga aleatório
       let jogadas: any = [];
-
       for (let i = 0; i < this.TAM_TAB; i++) {
         for (let j = 0; j < this.TAM_TAB; j++) {
           if (this.tabuleiro[i][j] === this.VAZIO) {
@@ -159,9 +162,10 @@ export class JogoDaVelhaService {
           }
         }
       }
-      let k = Math.floor(Math.random() * (jogadas.length() - 1));
+      let k = Math.floor(Math.random() * (jogadas.length - 1));
       jogada = [jogadas[k][0], jogadas[k][1]];
     }
+
     this.tabuleiro[jogada[0]][jogada[1]] = this._jogador;
     this.numMovimentos++;
     this.vitoria = this.fimDoJogo(
@@ -173,6 +177,12 @@ export class JogoDaVelhaService {
     this._jogador = this._jogador === this.X ? this.O : this.X;
   }
 
+  /**
+   * Obtém uma jogada válida para vitória de um jogador.
+   *
+   * @param number jogador
+   * @return nomber[]
+   */
   obterJogada(jogador: number): number[] {
     let tab = this.tabuleiro;
     for (let lin = 0; lin < this.TAM_TAB; lin++) {
@@ -180,10 +190,10 @@ export class JogoDaVelhaService {
         if (tab[lin][col] !== this.VAZIO) {
           continue;
         }
-        tab[lin][col] = this.jogador;
-
-        if (this.fimDoJogo(lin, col, tab, jogador)) return [lin, col];
-
+        tab[lin][col] = jogador;
+        if (this.fimDoJogo(lin, col, tab, jogador)) {
+          return [lin, col];
+        }
         tab[lin][col] = this.VAZIO;
       }
     }
